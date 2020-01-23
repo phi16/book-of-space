@@ -56,8 +56,26 @@ reviewRenderer.br = () => {
 
 function md2re(fn) {
   let text = fs.readFileSync("../" + fn, 'utf8');
-  text = text.replace(/\$(.*?)\$/g, "@<m>{$1}");
-  return marked(text, { renderer: reviewRenderer } );
+  text = text.replace(/\*\*.*?\*\*/g, m => { 
+    return m.replace(/ ?\$.*?\$ ?/g, "** $& **");
+  });
+  text = text.replace(/\$(.*?)\$/g, (_,m) => {
+    const e = m
+      .replace(/\*/g, "\\ast ")
+      .replace(/_/g, "&#95;")
+      .replace(/\\{/g, "&#123;")
+      .replace(/\\}/g, "&#125;")
+      .replace(/\\\\/g,"\\\\\\\\");
+    return "@<m>$" + e + "$";
+  });
+  return marked(text, { renderer: reviewRenderer } )
+    .replace(/&#39;/g, "'")
+    .replace(/&#95;/g, "_")
+    .replace(/&#123;/g, "\\{")
+    .replace(/&#125;/g, "\\}")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
 }
 
 let maxChapter = 1;
