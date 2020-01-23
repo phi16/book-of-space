@@ -1,0 +1,8 @@
+{
+  "name": "md2re",
+  "version": "0.0.1",
+  "dependencies": {
+    "fs": "latest",
+    "marked": "latest"
+  }
+}
