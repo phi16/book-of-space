@@ -67,6 +67,10 @@ reviewRenderer.br = () => {
 
 function md2re(fn) {
   let text = fs.readFileSync("../" + fn, 'utf8');
+  text = text.replace(/\(==(.*?)==\)/g, (_,m) => { 
+    const ks = m.split(",");
+    return "(@<kw>{" + ks[0] + "}, " + ks[1] + ")";
+  });
   text = text.replace(/==(.*?)==/g, (_,m) => { 
     return "@<kw>{" + m + "}";
   });
