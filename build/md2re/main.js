@@ -42,7 +42,7 @@ reviewRenderer.listitem = (text) => {
   return lines.join('\n') + nl;
 };
 reviewRenderer.blockquote = (quote) => {
-  return nl + "===[notoc] も" + nll + quote + "===[/notoc]" + nll;
+  return nl + "//note{" + nl + quote + "//}" + nll;
 };
 reviewRenderer.paragraph = (text) => {
   return text + nll;
