@@ -56,6 +56,9 @@ reviewRenderer.br = () => {
 
 function md2re(fn) {
   let text = fs.readFileSync("../" + fn, 'utf8');
+  text = text.replace(/==(.*?)==/g, (_,m) => { 
+    return "@<kw>{" + m + "}";
+  });
   text = text.replace(/\*\*.*?\*\*/g, m => { 
     return m.replace(/ ?\$.*?\$ ?/g, "** $& **");
   });
