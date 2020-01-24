@@ -68,7 +68,8 @@ function md2re(fn) {
       .replace(/_/g, "&#95;")
       .replace(/\\{/g, "&#123;")
       .replace(/\\}/g, "&#125;")
-      .replace(/\\\\/g,"\\\\\\\\");
+      .replace(/\\\\/g,"\\\\\\\\")
+      .replace(/\./g, "\\qdot");
     return "@<m>$" + e + "$";
   });
   return marked(text, { renderer: reviewRenderer } )
@@ -78,7 +79,10 @@ function md2re(fn) {
     .replace(/&#125;/g, "\\}")
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">");
+    .replace(/&gt;/g, ">")
+    .replace(/\\qdot/g, ".\\,")
+    .replace(/。/g, "．")
+    .replace(/、/g, "，");
 }
 
 let maxChapter = 1;
