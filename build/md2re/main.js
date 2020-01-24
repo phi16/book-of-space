@@ -41,8 +41,19 @@ reviewRenderer.listitem = (text) => {
   }
   return lines.join('\n') + nl;
 };
+const startNote = "[startnote]", startNoteRegex = /\[startnote\]/g;
+const endNote = "[endnote]", endNoteRegex = /\[endnote\]/g;
 reviewRenderer.blockquote = (quote) => {
-  return nl + "//note{" + nl + quote + "//}" + nll;
+  let lines = quote.split('\n');
+  for(let i=1;i<lines.length;i++) {
+    const s0 = lines[i-1].length > 0 && lines[i-1].charAt(0) != ' ';
+    const s1 = lines[i].length > 0 && lines[i].charAt(0) != ' ';
+    if(s0 && s1) {
+      lines.splice(i,0,'');
+      i++;
+    }
+  }
+  return nl + startNote + nl + lines.join('\n') + endNote + nll;
 };
 reviewRenderer.paragraph = (text) => {
   return text + nll;
@@ -82,7 +93,9 @@ function md2re(fn) {
     .replace(/&gt;/g, ">")
     .replace(/\\qdot/g, ".\\,")
     .replace(/。/g, "．")
-    .replace(/、/g, "，");
+    .replace(/、/g, "，")
+    .replace(startNoteRegex, "//embed{\n\\begin{reviewnote}\n//}")
+    .replace(endNoteRegex, "//embed{\n\\end{reviewnote}\n//}");
 }
 
 let maxChapter = 1;
