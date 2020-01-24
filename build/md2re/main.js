@@ -69,6 +69,7 @@ function md2re(fn) {
   let text = fs.readFileSync("../" + fn, 'utf8');
   text = text.replace(/\(==(.*?)==\)/g, (_,m) => { 
     const ks = m.split(",");
+    if(ks.length == 1) return "(@<kw>{" + ks[0] + "})";
     return "(@<kw>{" + ks[0] + "}, " + ks[1] + ")";
   });
   text = text.replace(/==(.*?)==/g, (_,m) => { 
@@ -84,7 +85,8 @@ function md2re(fn) {
       .replace(/\\{/g, "&#123;")
       .replace(/\\}/g, "&#125;")
       .replace(/\\\\/g,"\\\\\\\\")
-      .replace(/\./g, "\\qdot");
+      .replace(/\./g, "\\qdot")
+      .replace(/([0-9])\\qdot([0-9])/g, "$1.$2");
     return "@<m>$" + e + "$";
   });
   return marked(text, { renderer: reviewRenderer } )
