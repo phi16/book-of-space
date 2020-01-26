@@ -79,6 +79,7 @@ function md2re(fn) {
     return m.replace(/ ?\$.*?\$ ?/g, "** $& **");
   });
   text = text.replace(/\$(.*?)\$/g, (_,m) => {
+    if(m == "proof") return "@<m>$\\mathit{Proof.}$";
     const e = m
       .replace(/\*/g, "\\ast ")
       .replace(/_/g, "&#95;")
