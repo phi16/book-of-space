@@ -64,16 +64,21 @@ reviewRenderer.strong = (text) => {
 reviewRenderer.br = () => {
   return nll;
 };
+reviewRenderer.link = (href,title,text) => {
+  return `[startlink]${href}[sep]${text}[endlink]`;
+};
 
 function md2re(fn) {
   let text = fs.readFileSync("../" + fn, 'utf8');
   text = text.replace(/\(==(.*?)==\)/g, (_,m) => { 
     const ks = m.split(",");
-    if(ks.length == 1) return "(@<kw>{" + ks[0] + "})";
-    return "(@<kw>{" + ks[0] + "}, " + ks[1] + ")";
+    if(ks.length == 1) return `(@<kw>{${ks[0]}})`;
+    return `(@<kw>{${ks[0]}}, ${ks[1]}@<hidx>{${ks[0]}})`;
   });
   text = text.replace(/==(.*?)==/g, (_,m) => { 
-    return "@<kw>{" + m + "}";
+    const ks = m.split(",");
+    if(ks.length == 1) return `@<kw>{${m}}`;
+    return `@<kw>{${m}}@<hidx>{${ks[0]}}`;
   });
   text = text.replace(/\*\*.*?\*\*/g, m => { 
     return m.replace(/ ?\$.*?\$ ?/g, "** $& **");
@@ -102,7 +107,8 @@ function md2re(fn) {
     .replace(/。/g, "．")
     .replace(/、/g, "，")
     .replace(startNoteRegex, "//embed{\n\\begin{reviewnote}\n//}")
-    .replace(endNoteRegex, "//embed{\n\\end{reviewnote}\n//}");
+    .replace(endNoteRegex, "//embed{\n\\end{reviewnote}\n//}")
+    .replace(/\[startlink\](.*?)\[sep\](.*?)\[endlink\]/g, "@<href>{$1, $2}");
 }
 
 let maxChapter = 1;
@@ -110,6 +116,8 @@ const mainText = {};
 filePaths.forEach(fn => {
   if(fn == "preface.md") {
     fs.writeFileSync("./review/preface.re", md2re(fn));
+  } else if(fn == "postface.md") {
+    fs.writeFileSync("./review/postface.re", md2re(fn));
   } else {
     const m = fn.match(/(\d)-(\d)\.md/);
     if(m == null) {
@@ -142,4 +150,5 @@ CHAPS:
 ${chaps.join('\n')}
 APPENDIX:
 POSTDEF:
+  - postface.re
 `);

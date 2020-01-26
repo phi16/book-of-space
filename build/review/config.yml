@@ -72,7 +72,7 @@ date: 2020-01-23
 # 日付の後ろを空白文字で区切り、任意の文字列を置くことも可能。
 history: [["2020-01-23"]]
 # 権利表記(配列で複数指定可)
-# rights: (C) 2016-2019 Re:VIEW Developers
+rights: (C) 2020 phi16
 # description: 説明
 # subject: 短い説明用タグ(配列で複数指定可)
 # type: 書籍のカテゴリーなど(配列で複数指定可)
@@ -82,7 +82,7 @@ history: [["2020-01-23"]]
 # coverage: 内容の範囲や領域(配列で複数指定可)
 
 # デバッグフラグ。nullでないときには一時ファイルをカレントディレクトリに作成し、削除もしない
-debug: null
+debug: true
 
 # 固有IDに使用するドメイン。指定しない場合には、時刻に基づくランダムUUIDが入る
 # urnid: urn:uid:http://example.com/book-title/
@@ -381,11 +381,11 @@ pdfmaker:
   # bbox: mediabox
   #
   # 索引を作成するか。trueにすると索引作成が有効になる
-  # makeindex: null
+  makeindex: null
   # 索引作成コマンド
-  # makeindex_command: mendex
+  makeindex_command: mendex
   # 索引作成コマンドのオプション
-  # makeindex_options: "-f -r -I utf8"
+  makeindex_options: "-f -r -I utf8"
   # 索引作成コマンドのスタイルファイル
   # makeindex_sty: null
   # 索引作成コマンドの辞書ファイル
