@@ -381,7 +381,7 @@ pdfmaker:
   # bbox: mediabox
   #
   # 索引を作成するか。trueにすると索引作成が有効になる
-  makeindex: true
+  makeindex: null
   # 索引作成コマンド
   makeindex_command: mendex
   # 索引作成コマンドのオプション
